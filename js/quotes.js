@@ -1,7 +1,7 @@
 // js/quotes.js
 
 const CITATY_URL_MAP = {
-    0: "https://citaty.info/book/mihail-bulgakov/master-i-margarita/short",
+    0: "https://citaty.info/book/dzhonatan-straud/pustaya-mogila",
     1: "https://citaty.info/book/dzhordzh-oruell/1984/short",
     2: "https://citaty.info/book/harper-li/ubit-peresmeshnika",
     3: "https://citaty.info/book/dzhein-ostin/gordost-i-predubezhdenie",
