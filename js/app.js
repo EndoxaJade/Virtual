@@ -46,7 +46,7 @@ let currentIsbn = null;
 function showCard(markerId, bookInfo, quoteText) {
     currentMarkerId = markerId;
     currentBookInfo = bookInfo;
-    currentIsbn = BOOK_ISBN_MAP[markerId];
+    currentIsbn = LOCAL_DATA[markerId]?.isbn;
 
     // Заполнение полей
     document.getElementById("card-title").textContent = bookInfo?.title || "Без названия";
@@ -83,11 +83,11 @@ if (marker) {
         // Для демонстрации используем markerId = 0 (Мастер и Маргарита)
         // В реальном проекте: несколько маркеров, каждый со своим ID
         const markerId = 0;
-        const isbn = BOOK_ISBN_MAP[markerId];
+        const isbn = LOCAL_DATA[markerId]?.isbn;
 
         // Загрузка данных
-        const bookInfo = await getBookInfo(markerId);
-        const quote = await getRandomQuote(markerId);
+        const bookInfo = LOCAL_DATA[markerId]?.mood_query;
+        const quote = LOCAL_DATA[markerId]?.quote;
 
         showCard(markerId, bookInfo, quote);
     });
