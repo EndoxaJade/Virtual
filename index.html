@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AR Представление персонажей</title>
+
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.5/aframe/build/aframe-ar.js"></script>
+</head>
+
+<body>
+    <a-scene embedded arjs="sourceType: webcam; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
+             vr-mode-ui="enabled: false"
+             renderer="logarithmicDepthBuffer: true;"
+             arjs-hit-testing="enabled: false">
+        <a-marker preset="hiro">
+            <a-image src="images/filipo_smile.png" rotation="-90 0 0" width="2" height="2">
+        </a-marker>
+
+        <a-marker type="pattern" url="markers/pattern-char1.patt">
+            <a-image src="images/dacey_smile.png" rotation="-90 0 0" width="2" height="2">
+            </a-marker>
+
+        <a-marker type="pattern" url="markers/pattern-char2.patt">
+            <a-image src="images/jean_smileb.png" rotation="-90 0 0" width="2" height="2">
+            </a-marker>
+
+        <a-marker type="pattern" url="markers/pattern-char3.patt">
+            <a-image src="images/raiden_eyeroll.png" rotation="-90 0 0" width="2" height="2">
+            </a-marker>
+        <a-entity camera></a-entity>
+    </a-scene>
+</body>
+</html>
