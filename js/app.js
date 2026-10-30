@@ -97,66 +97,6 @@ if (marker) {
     });
 }
 
-const marker1 = document.getElementById("1-marker");
-if (marker1) {
-    marker.addEventListener("markerFound", async () => {
-        // Для демонстрации используем markerId = 0 (Мастер и Маргарита)
-        // В реальном проекте: несколько маркеров, каждый со своим ID
-        const markerId = 1;
-        const isbn = BOOK_ISBN_MAP[markerId];
-
-        // Загрузка данных
-        const bookInfo = await getBookInfo(markerId);
-        const quote = await getRandomQuote(markerId);
-
-        showCard(markerId, bookInfo, quote);
-    });
-
-    marker.addEventListener("markerLost", () => {
-        hideCard();
-    });
-}
-
-const marker2 = document.getElementById("2-marker");
-if (marker2) {
-    marker.addEventListener("markerFound", async () => {
-        // Для демонстрации используем markerId = 0 (Мастер и Маргарита)
-        // В реальном проекте: несколько маркеров, каждый со своим ID
-        const markerId = 2;
-        const isbn = BOOK_ISBN_MAP[markerId];
-
-        // Загрузка данных
-        const bookInfo = await getBookInfo(markerId);
-        const quote = await getRandomQuote(markerId);
-
-        showCard(markerId, bookInfo, quote);
-    });
-
-    marker.addEventListener("markerLost", () => {
-        hideCard();
-    });
-}
-
-const marker3 = document.getElementById("3-marker");
-if (marker3) {
-    marker.addEventListener("markerFound", async () => {
-        // Для демонстрации используем markerId = 0 (Мастер и Маргарита)
-        // В реальном проекте: несколько маркеров, каждый со своим ID
-        const markerId = 3;
-        const isbn = BOOK_ISBN_MAP[markerId];
-
-        // Загрузка данных
-        const bookInfo = await getBookInfo(markerId);
-        const quote = await getRandomQuote(markerId);
-
-        showCard(markerId, bookInfo, quote);
-    });
-
-    marker.addEventListener("markerLost", () => {
-        hideCard();
-    });
-}
-
 // ========== Обработка кнопок ==========
 document.getElementById("close-card").addEventListener("click", hideCard);
 
