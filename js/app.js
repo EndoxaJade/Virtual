@@ -58,15 +58,15 @@ function showCard(markerId, bookInfo, quoteText) {
 
   const year = data?.publishedDate?.substring(0, 4) ?? "—";
   document.getElementById("card-passport").textContent =
-    `${year} | ${data?.publisher ?? "—"} | ${data?.pageCount ?? "—"} стр.`;
+    `${year} | ${data?.publisher ?? "—"} | ${data?.pages ?? "—"} стр.`;
 
   document.getElementById("card-isbn").textContent = `ISBN: ${data?.isbn ?? ""}`;
 
   document.getElementById("card-rating").textContent =
-    data?.averageRating != null ? `Рейтинг: ${data.averageRating.toFixed(1)}/5` : "Рейтинг: нет данных";
+    data?.rating != null ? `Рейтинг: ${data.rating.toFixed(1)}/5` : "Рейтинг: нет данных";
 
   document.getElementById("card-genre").textContent =
-    data?.categories?.slice(0, 3).join(", ") ?? "Жанр: —";
+    data?.genre?.slice(0, 3).join(", ") ?? "Жанр: —";
 
   // Вариант: подтягиваем цитату также из LOCAL_DATA
   document.getElementById("card-quote").textContent = data?.quote ?? "";
