@@ -1,118 +1,81 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <title>AR.js + A-Frame: карточка книги над маркером</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- A-Frame -->
-  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-  <!-- AR.js для A-Frame -->
-  <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
-  <style>
-    html, body { margin: 0; height: 100%; overflow: hidden; }
-    /* Подсказка (необязательно) */
-    #hint {
-      position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
-      background: rgba(0,0,0,.6); color: #fff; padding: 6px 12px; border-radius: 6px;
-      font-family: sans-serif; font-size: 14px;
-    }
-  </style>
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AR Библиотека</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- AR.js + A-Frame -->
+<!-- 1. Сначала загрузите A-Frame (обязательно перед AR.js) -->
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+<!-- 2. Затем загрузите AR.js (используйте стабильную версию 3.4.5) -->
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.5/aframe/build/aframe-ar.js"></script></head>
 <body>
-  <div id="hint">Наведите камеру на маркер ( Hiro ). Карточка книги появится.</div>
+    <!-- AR-сцена -->
+    <a-scene embedded arjs="sourceType: webcam; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
+             vr-mode-ui="enabled: false"
+             renderer="logarithmicDepthBuffer: true;"
+             arjs-hit-testing="enabled: false">
+        <!-- Маркер: hiro (для демонстрации; замените на кастомный маркер) -->
+        <a-marker preset="hiro" id="main-marker" emitevents="true" 
+                  cursor="rayOrigin: mouse" raycaster="objects: .clickable">
+            <!-- Здесь можно разместить 3D-объект, но мы используем HTML-оверлей -->
+            <a-entity id="marker-anchor"></a-entity>
+        </a-marker>
 
-  <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
-    <!-- Маркер Hiro: при обнаружении будет показываться карточка -->
-    <a-marker preset="hiro" id="bookMarker">
-      <!-- Карточка: plane + тексты -->
-      <a-entity id="card" visible="false" position="0 0.04 0" rotation="-90 0 0">
-        <!-- Фон карточки -->
-        <a-plane width="0.9" height="0.5" color="#ffffff" material="opacity:0.95" shadow="cast: false"></a-plane>
+        <a-marker type="pattern" url="markers/pattern-book1.patt">
+            <a-text value="This is book number 1" align="center" color="#32CD32" position="0 0.25 0.02" scale="0.7 0.7 0.7"></a-text>
+            </a-marker>
 
-        <!-- Текстовые поля карточки -->
-        <a-text id="title" value="" color="#000" width="0.8" position="-0.44 0.14 0.01" align="left"></a-text>
-        <a-text id="rating" value="" color="#222" width="0.8" position="-0.44 0.04 0.01" align="left"></a-text>
-        <a-text id="quote" value="" color="#555" width="0.8" position="-0.44 -0.04 0.01" wrap-count="28" align="left"></a-text>
-        <a-text id="year" value="" color="#111" width="0.8" position="-0.44 -0.14 0.01" align="left"></a-text>
-      </a-entity>
-    </a-marker>
+        <a-marker type="pattern" url="markers/pattern-book2.patt">
+            <a-text value="This is book number 2" align="center" color="#32CD32" position="0 0.25 0.02" scale="0.7 0.7 0.7"></a-text>
+            </a-marker>
 
-    <a-entity camera></a-entity>
-  </a-scene>
+        <a-marker type="pattern" url="markers/pattern-book3.patt">
+            <a-text value="This is book number 3" align="center" color="#32CD32" position="0 0.25 0.02" scale="0.7 0.7 0.7"></a-text>
+            </a-marker>
+        <a-entity camera></a-entity>
+    </a-scene>
 
-  <script>
-    // LOCAL_DATA: локально хранится массив с данными о книгах
-    const LOCAL_DATA = [
-      {
-        title: "1984",
-        rating: 4.6,
-        quote: "The future belongs to those who dream today.",
-        year: 1949,
-        author: "George Orwell",
-        note: "Dystopian classic"
-      },
-      {
-        title: "To Kill a Mockingbird",
-        rating: 4.8,
-        quote: "Real courage is when you know you are licked, but you still fight.",
-        year: 1960,
-        author: "Harper Lee",
-        note: "Classic about justice and empathy"
-      },
-      {
-        title: "The Pragmatic Programmer",
-        rating: 4.7,
-        quote: "The only way to go fast is to go well.",
-        year: 1999,
-        author: "Andrew Hunt & David Thomas",
-        note: "Software engineering wisdom"
-      },
-      {
-        title: "Clean Code",
-        rating: 4.5,
-        quote: "Leave behind you a little sparkle of laughter.",
-        year: 2008,
-        author: "Robert C. Martin",
-        note: "Guide to clean software craftsmanship"
-      }
-    ];
+    <!-- HTML-карточка книги (скрыта по умолчанию) -->
+    <div id="book-card" class="book-card hidden">
+        <div class="card-header">
+            <h2 id="card-title">Название книги</h2>
+            <button id="close-card">✕</button>
+        </div>
+        <p id="card-authors" class="authors">Автор</p>
+        <p id="card-passport" class="passport">Год | Издательство | Страницы</p>
+        <p id="card-isbn" class="isbn">ISBN: —</p>
+        <p id="card-rating" class="rating">Рейтинг: —</p>
+        <p id="card-genre" class="genre">Жанр: —</p>
+        <div class="quote-section">
+            <h3>Цитата</h3>
+            <p id="card-quote">—</p>
+            <p class="source">Источник: citaty.info</p>
+        </div>
+        <div class="similar-section">
+            <h3>Похожие книги</h3>
+            <ul id="card-similar"></ul>
+        </div>
+        <div class="actions">
+            <button id="btn-music">🎵 Яндекс Музыка</button>
+            <button id="btn-new-quote">🔄 Другая цитата</button>
+            <button id="btn-bookmark">🔖 В закладки</button>
+            <button id="btn-show-bookmarks">📋 Список закладок</button>
+        </div>
+    </div>
 
-    let currentIndex = 0;
+    <!-- Контейнер для уведомлений -->
+    <div id="toast" class="toast hidden"></div>
 
-    // Элементы карточки
-    const marker = document.getElementById('bookMarker');
-    const card = document.getElementById('card');
-    const titleEl = document.getElementById('title');
-    const ratingEl = document.getElementById('rating');
-    const quoteEl = document.getElementById('quote');
-    const yearEl = document.getElementById('year');
-
-    function updateCard(index) {
-      const data = LOCAL_DATA[index % LOCAL_DATA.length];
-      titleEl.setAttribute('value', 'Название: ' + data.title);
-      ratingEl.setAttribute('value', 'Рейтинг: ' + data.rating);
-      quoteEl.setAttribute('value', 'Цитата: "' + data.quote + '"');
-      yearEl.setAttribute('value', 'Год выпуска: ' + data.year);
-    }
-
-    // Появление/скрытие карточки при обнаружении/потере маркера
-    marker.addEventListener('markerFound', () => {
-      card.setAttribute('visible', true);
-      updateCard(currentIndex);
-    });
-    marker.addEventListener('markerLost', () => {
-      card.setAttribute('visible', false);
-    });
-
-    // Переключение на следующую книгу по клику на карточку
-    card.addEventListener('click', () => {
-      currentIndex = (currentIndex + 1) % LOCAL_DATA.length;
-      updateCard(currentIndex);
-    });
-
-    // Опционально: для десктопа можно включить hover через raycaster
-    // Пример: добавьте <a-entity id="pointer" raycaster="objects: .clickable"></a-entity>
-    // и назначьте обработчики на маркер/карту для событий pointerenter/pointerleave.
-  </script>
+    <script src="js/books.js"></script>
+    <script src="js/quotes.js"></script>
+    <script src="js/app.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js');
+}
+</script>
 </body>
 </html>
