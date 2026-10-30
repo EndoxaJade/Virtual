@@ -49,17 +49,17 @@ function showCard(markerId, bookInfo, quoteText) {
     currentIsbn = LOCAL_DATA[markerId]?.isbn;
 
     // Заполнение полей
-    document.getElementById("card-title").textContent = LOCAL_DATA[markerId]?.title || "Без названия";
+    document.getElementById("card-title").textContent = bookInfo?.title || "Без названия";
     document.getElementById("card-authors").textContent = 
-        LOCAL_DATA[markerId].authors?.join(", ") || "Автор не указан";
-    const year = LOCAL_DATA[markerId]?.year?.substring(0, 4) || "—";
+        bookInfo?.authors?.join(", ") || "Автор не указан";
+    const year = bookInfo?.publishedDate?.substring(0, 4) || "—";
     document.getElementById("card-passport").textContent = 
-        `${year} | ${LOCAL_DATA[markerId]?.publisher || "—"} | ${LOCAL_DATA[markerId]?.pages || "—"} стр.`;
+        `${year} | ${bookInfo?.publisher || "—"} | ${bookInfo?.pageCount || "—"} стр.`;
     document.getElementById("card-isbn").textContent = `ISBN: ${currentIsbn}`;
     document.getElementById("card-rating").textContent = 
-        LOCAL_DATA[markerId]?.rating ? `Рейтинг: ${LOCAL_DATA[markerId].rating.toFixed(1)}/5` : "Рейтинг: нет данных";
+        bookInfo?.averageRating ? `Рейтинг: ${bookInfo.averageRating.toFixed(1)}/5` : "Рейтинг: нет данных";
     document.getElementById("card-genre").textContent = 
-        LOCAL_DATA[markerId]?.genre?.slice(0, 3).join(", ") || "Жанр: —";
+        bookInfo?.categories?.slice(0, 3).join(", ") || "Жанр: —";
     document.getElementById("card-quote").textContent = quoteText;
 
     // Похожие книги
