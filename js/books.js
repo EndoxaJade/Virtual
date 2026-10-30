@@ -4,7 +4,8 @@ const bookCache = {};
 
 // Локальные данные (настроение / похожие книги)
 const LOCAL_DATA = {
-    0: {authors: ["Михаил Булгаков"], 
+    0: {title: "Мастер и Маргарита",
+        authors: ["Михаил Булгаков"], 
         year: "1967", 
         publisher: "АСТ", 
         pages: 480, 
