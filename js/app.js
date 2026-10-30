@@ -44,30 +44,39 @@ let currentBookInfo = null;
 let currentIsbn = null;
 
 function showCard(markerId, bookInfo, quoteText) {
-    currentMarkerId = markerId;
-    currentBookInfo = bookInfo;
-    currentIsbn = LOCAL_DATA[markerId]?.isbn;
+  currentMarkerId = markerId;
 
-    // Заполнение полей
-    document.getElementById("card-title").textContent = bookInfo?.title || "Без названия";
-    document.getElementById("card-authors").textContent = 
-        bookInfo?.authors?.join(", ") || "Автор не указан";
-    const year = bookInfo?.publishedDate?.substring(0, 4) || "—";
-    document.getElementById("card-passport").textContent = 
-        `${year} | ${bookInfo?.publisher || "—"} | ${bookInfo?.pageCount || "—"} стр.`;
-    document.getElementById("card-isbn").textContent = `ISBN: ${currentIsbn}`;
-    document.getElementById("card-rating").textContent = 
-        bookInfo?.averageRating ? `Рейтинг: ${bookInfo.averageRating.toFixed(1)}/5` : "Рейтинг: нет данных";
-    document.getElementById("card-genre").textContent = 
-        bookInfo?.categories?.slice(0, 3).join(", ") || "Жанр: —";
-    document.getElementById("card-quote").textContent = quoteText;
+  // Подтягиваем данные из LOCAL_DATA по маркеру
+  const data = LOCAL_DATA[markerId] || {};
 
-    // Похожие книги
-    const similar = LOCAL_DATA[markerId]?.similar_books || [];
-    document.getElementById("card-similar").innerHTML = 
-        similar.map(s => `<li>${s}</li>`).join("");
+  currentBookInfo = data;
+  currentIsbn = data?.isbn;
 
-    document.getElementById("book-card").classList.remove("hidden");
+  // Заполнение полей данными из LOCAL_DATA
+  document.getElementById("card-title").textContent = data?.title ?? "Без названия";
+  document.getElementById("card-authors").textContent = data?.authors?.join(", ") ?? "Автор не указан";
+
+  const year = data?.publishedDate?.substring(0, 4) ?? "—";
+  document.getElementById("card-passport").textContent =
+    `${year} | ${data?.publisher ?? "—"} | ${data?.pageCount ?? "—"} стр.`;
+
+  document.getElementById("card-isbn").textContent = `ISBN: ${data?.isbn ?? ""}`;
+
+  document.getElementById("card-rating").textContent =
+    data?.averageRating != null ? `Рейтинг: ${data.averageRating.toFixed(1)}/5` : "Рейтинг: нет данных";
+
+  document.getElementById("card-genre").textContent =
+    data?.categories?.slice(0, 3).join(", ") ?? "Жанр: —";
+
+  // Вариант: подтягиваем цитату также из LOCAL_DATA
+  document.getElementById("card-quote").textContent = data?.quote ?? "";
+
+  // Похожие книги
+  const similar = data?.similar_books || [];
+  document.getElementById("card-similar").innerHTML =
+    similar.map(s => `<li>${s}</li>`).join("");
+
+  document.getElementById("book-card").classList.remove("hidden");
 }
 
 function hideCard() {
